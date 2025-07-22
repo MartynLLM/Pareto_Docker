@@ -1,0 +1,193 @@
+id,name,nswrm,obj_id
+1,buffer_1,buffer,"815, 827, 829, 833, 852, 853, 854, 938, 940, 941, 942, 959, 1032, 1033, 1099"
+2,buffer_10,buffer,"806, 811, 869, 912, 915, 979, 980, 1027, 1084"
+3,buffer_11,buffer,"924, 967, 969, 971, 972, 973, 974, 975, 976, 977, 978"
+4,buffer_12,buffer,"835, 890"
+5,buffer_13,buffer,"799, 803, 804, 805, 830, 863, 864, 883, 884, 992, 993, 994, 1072"
+6,buffer_14,buffer,"812, 907, 982, 983"
+7,buffer_15,buffer,802
+8,buffer_16,buffer,"867, 901, 904, 985, 1112"
+9,buffer_17,buffer,989
+10,buffer_18,buffer,"866, 905, 906, 984, 1094"
+11,buffer_19,buffer,"894, 988, 1100"
+12,buffer_2,buffer,"855, 930, 962, 963, 964, 965, 966, 1031, 1142"
+13,buffer_20,buffer,"834, 837, 885, 886, 1017, 1021, 1022, 1034, 1089"
+14,buffer_21,buffer,"889, 898, 986, 987, 1092"
+15,buffer_3,buffer,"840, 846, 850, 851, 856, 857, 858, 937, 950, 951, 952, 958, 1030, 1098, 1101, 1102"
+16,buffer_4,buffer,"847, 953, 1023, 1024"
+17,buffer_5,buffer,"808, 860, 861, 917, 918, 919"
+18,buffer_6,buffer,"807, 909, 910, 981, 1096, 1097"
+19,buffer_7,buffer,"800, 831, 832"
+20,buffer_8,buffer,"816, 817, 822, 841, 848, 849, 859, 933, 934, 935, 936, 944, 945, 946, 947, 948, 949, 954, 955, 956, 957, 960, 961"
+21,buffer_9,buffer,"865, 925, 968, 970"
+22,grassslope_1,grassslope,"90, 115, 358, 575, 583, 602, 853"
+23,grassslope_107,grassslope,1057
+24,grassslope_11,grassslope,370
+25,grassslope_12,grassslope,694
+26,grassslope_13,grassslope,"522, 702"
+27,grassslope_16,grassslope,241
+28,grassslope_17,grassslope,"1051, 1052"
+29,grassslope_18,grassslope,1059
+30,grassslope_2,grassslope,478
+31,grassslope_20,grassslope,"699, 717"
+32,grassslope_23,grassslope,"110, 112, 140"
+33,grassslope_25,grassslope,104
+34,grassslope_27,grassslope,203
+35,grassslope_28,grassslope,209
+36,grassslope_29,grassslope,215
+37,grassslope_30,grassslope,220
+38,grassslope_31,grassslope,228
+39,grassslope_33,grassslope,236
+40,grassslope_34,grassslope,242
+41,grassslope_35,grassslope,244
+42,grassslope_36,grassslope,256
+43,grassslope_37,grassslope,284
+44,grassslope_38,grassslope,288
+45,grassslope_4,grassslope,409
+46,grassslope_42,grassslope,310
+47,grassslope_43,grassslope,341
+48,grassslope_45,grassslope,357
+49,grassslope_46,grassslope,359
+50,grassslope_47,grassslope,364
+51,grassslope_48,grassslope,369
+52,grassslope_49,grassslope,371
+53,grassslope_5,grassslope,"400, 424, 1058"
+54,grassslope_52,grassslope,375
+55,grassslope_53,grassslope,378
+56,grassslope_54,grassslope,392
+57,grassslope_55,grassslope,395
+58,grassslope_56,grassslope,412
+59,grassslope_58,grassslope,446
+60,grassslope_6,grassslope,"562, 700, 703"
+61,grassslope_61,grassslope,473
+62,grassslope_62,grassslope,480
+63,grassslope_63,grassslope,500
+64,grassslope_64,grassslope,509
+65,grassslope_67,grassslope,548
+66,grassslope_68,grassslope,550
+67,grassslope_69,grassslope,554
+68,grassslope_7,grassslope,547
+69,grassslope_72,grassslope,560
+70,grassslope_75,grassslope,572
+71,grassslope_78,grassslope,606
+72,grassslope_80,grassslope,624
+73,grassslope_83,grassslope,639
+74,grassslope_84,grassslope,651
+75,grassslope_86,grassslope,662
+76,grassslope_87,grassslope,663
+77,grassslope_88,grassslope,669
+78,grassslope_89,grassslope,673
+79,grassslope_91,grassslope,685
+80,grassslope_93,grassslope,708
+81,grassslope_94,grassslope,709
+82,grassslope_96,grassslope,735
+83,grassslope_97,grassslope,764
+84,grassslope_99,grassslope,882
+85,hedge_1,hedge,"1047, 1049, 1050, 1051, 1052, 1054, 1056, 1058, 1059, 1060, 1061"
+86,notill_1,notill,"54, 57, 90, 115, 118, 121, 127, 128, 129, 132, 133, 275, 338, 347, 350, 351, 352, 358, 361, 362, 434, 435, 449, 474, 489, 575, 576, 583, 602, 853, 854, 938, 939, 941, 942, 1032"
+87,notill_10,notill,"36, 37, 39, 42, 125, 223, 979"
+88,notill_100,notill,943
+89,notill_101,notill,1020
+90,notill_102,notill,1043
+91,notill_103,notill,1045
+92,notill_104,notill,1048
+93,notill_105,notill,1053
+94,notill_106,notill,1055
+95,notill_107,notill,1057
+96,notill_108,notill,1080
+97,notill_11,notill,"233, 255, 300, 370, 384, 914, 921, 922, 923, 967, 975, 1060"
+98,notill_12,notill,694
+99,notill_13,notill,"516, 522, 557, 558, 702, 724, 991, 1049, 1050"
+100,notill_14,notill,"44, 561"
+101,notill_15,notill,"538, 647, 1054, 1056"
+102,notill_16,notill,"241, 564, 765, 985, 1016, 1112"
+103,notill_17,notill,"535, 536, 551, 655, 1051, 1052"
+104,notill_18,notill,"41, 553, 618, 984, 1059"
+105,notill_19,notill,183
+106,notill_2,notill,"401, 450, 459, 478, 492, 926, 927, 928"
+107,notill_20,notill,"699, 717"
+108,notill_21,notill,"546, 626, 739, 900, 987, 1092, 1157"
+109,notill_22,notill,615
+110,notill_23,notill,"98, 110, 111, 112, 113, 116, 140, 523, 567, 598, 610, 614, 719, 766, 1047, 1079"
+111,notill_24,notill,15
+112,notill_25,notill,104
+113,notill_26,notill,143
+114,notill_27,notill,203
+115,notill_28,notill,209
+116,notill_29,notill,215
+117,notill_30,notill,220
+118,notill_31,notill,228
+119,notill_32,notill,235
+120,notill_33,notill,236
+121,notill_34,notill,242
+122,notill_35,notill,244
+123,notill_36,notill,256
+124,notill_37,notill,284
+125,notill_38,notill,288
+126,notill_39,notill,295
+127,notill_4,notill,"279, 409, 493"
+128,notill_40,notill,302
+129,notill_41,notill,305
+130,notill_42,notill,310
+131,notill_43,notill,341
+132,notill_44,notill,349
+133,notill_45,notill,357
+134,notill_46,notill,359
+135,notill_47,notill,364
+136,notill_48,notill,369
+137,notill_49,notill,371
+138,notill_5,notill,"16, 249, 387, 389, 391, 394, 400, 413, 424, 729, 1058"
+139,notill_50,notill,372
+140,notill_51,notill,373
+141,notill_52,notill,375
+142,notill_53,notill,378
+143,notill_54,notill,392
+144,notill_55,notill,395
+145,notill_56,notill,412
+146,notill_57,notill,445
+147,notill_58,notill,446
+148,notill_59,notill,451
+149,notill_6,notill,"35, 45, 562, 700, 703"
+150,notill_60,notill,463
+151,notill_61,notill,473
+152,notill_62,notill,480
+153,notill_63,notill,500
+154,notill_64,notill,509
+155,notill_65,notill,526
+156,notill_66,notill,543
+157,notill_67,notill,548
+158,notill_68,notill,550
+159,notill_69,notill,554
+160,notill_7,notill,"207, 218, 238, 286, 537, 542, 544, 545, 547, 625, 670, 677, 688, 1025, 1061, 1083"
+161,notill_70,notill,556
+162,notill_71,notill,559
+163,notill_72,notill,560
+164,notill_73,notill,566
+165,notill_74,notill,568
+166,notill_75,notill,572
+167,notill_76,notill,597
+168,notill_77,notill,599
+169,notill_78,notill,606
+170,notill_79,notill,607
+171,notill_8,notill,"360, 932, 933"
+172,notill_80,notill,624
+173,notill_81,notill,631
+174,notill_82,notill,634
+175,notill_83,notill,639
+176,notill_84,notill,651
+177,notill_85,notill,652
+178,notill_86,notill,662
+179,notill_87,notill,663
+180,notill_88,notill,669
+181,notill_89,notill,673
+182,notill_9,notill,386
+183,notill_90,notill,684
+184,notill_91,notill,685
+185,notill_92,notill,696
+186,notill_93,notill,708
+187,notill_94,notill,709
+188,notill_95,notill,716
+189,notill_96,notill,735
+190,notill_97,notill,764
+191,notill_98,notill,792
+192,notill_99,notill,882
