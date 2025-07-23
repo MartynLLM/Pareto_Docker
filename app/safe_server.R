@@ -2,15 +2,7 @@
 # comments: 
 # Project: Clustering Pareto solutions/Multi-objective visualisation
 # author: cordula.wittekind@ufz.de
-# Modified to use ggplot2 + sf instead of webshot for map downloads
 ####################################################################
-
-# Load required libraries for static plotting
-library(ggplot2)
-library(sf)
-library(dplyr)
-library(viridis)
-
 server <- function(input, output, session) {
 
   ## reactive values
@@ -147,176 +139,6 @@ server <- function(input, output, session) {
   meas_running <- reactiveVal(FALSE) #spinner in ahp tab
   fit_row <- reactiveVal()  
   fit_sorted <- reactiveVal()
-  
-  # ==================== STATIC PLOTTING FUNCTIONS ====================
-  
-  # Static version of single_meas_fun2 for ggplot2
-  single_meas_fun2_static = function() {
-    req(lalo(), cmf(), sel_tay(), fit1())
-    
-    cols = objectives()
-    values = sel_tay()
-    
-    mv <- fit1() %>% filter(across(all_of(cols), ~ . %in% values))
-    hru_one = plt_sel(shp = cmf(), opti_sel = mv$optimum)
-    
-    if(!file.exists("../data/measure_location.csv")) return(NULL)
-    mes = read.csv("../data/measure_location.csv")
-    
-    # Get measure column for plotting
-    col_sel = names(hru_one)[grep("Optim", names(hru_one))]
-    if(length(col_sel) > 0) {
-      measure_col = col_sel[1]
-    } else {
-      return(NULL)
-    }
-    
-    # Prepare color palette
-    man_col = c("#66C2A5", "#4db818", "#663e13", "#F7A600", "#03597F", 
-                "#83D0F5", "#FFEF2C", "#a84632", "#b82aa5", "#246643")
-    unique_measures = unique(mes$nswrm)
-    man_col = man_col[1:length(unique_measures)]
-    names(man_col) = unique_measures
-    
-    # Get the measure data from the spatial data
-    if(measure_col %in% names(hru_one)) {
-      # Create the plot
-      p <- ggplot(hru_one) +
-        geom_sf(aes_string(fill = measure_col), color = "white", size = 0.1) +
-        scale_fill_manual(values = man_col, na.value = "lightgrey", 
-                         name = "Measures") +
-        theme_void() +
-        theme(
-          legend.position = "bottom",
-          legend.title = element_text(size = 12, face = "bold"),
-          legend.text = element_text(size = 10),
-          plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
-          panel.background = element_rect(fill = "white", color = NA),
-          plot.background = element_rect(fill = "white", color = NA)
-        ) +
-        labs(title = "Measure Implementation")
-      
-      # Add buffers if they exist
-      if(!is.null(buffers()) && nrow(buffers()) > 0) {
-        p <- p + geom_sf(data = buffers(), fill = NA, color = "red", 
-                        linetype = "dashed", size = 0.5)
-      }
-      
-      return(p)
-    } else {
-      return(NULL)
-    }
-  }
-  
-  # Static version of single_meas_fun for AHP
-  single_meas_fun_static = function(){
-    if(!file.exists("../data/measure_location.csv")){return(NULL)}
-    req(boo(), lalo(), cmf())
-    
-    hru_one = plt_sel(shp = cmf(), opti_sel = boo())
-    mes = read.csv("../data/measure_location.csv")
-    col_sel = names(hru_one)[grep("Optim", names(hru_one))]
-    
-    if(length(col_sel) > 0) {
-      measure_col = col_sel[1]
-    } else {
-      return(NULL)
-    }
-    
-    # Prepare color palette
-    man_col = c("#66C2A5", "#4db818", "#663e13", "#F7A600", "#03597F", 
-                "#83D0F5", "#FFEF2C", "#a84632", "#b82aa5", "#246643")
-    unique_measures = unique(mes$nswrm)
-    man_col = man_col[1:length(unique_measures)]
-    names(man_col) = unique_measures
-    
-    # Create the plot
-    if(measure_col %in% names(hru_one)) {
-      p <- ggplot(hru_one) +
-        geom_sf(aes_string(fill = measure_col), color = "white", size = 0.1) +
-        scale_fill_manual(values = man_col, na.value = "lightgrey", 
-                         name = "Measures") +
-        theme_void() +
-        theme(
-          legend.position = "bottom",
-          legend.title = element_text(size = 12, face = "bold"),
-          legend.text = element_text(size = 10),
-          plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
-          panel.background = element_rect(fill = "white", color = NA),
-          plot.background = element_rect(fill = "white", color = NA)
-        ) +
-        labs(title = "AHP Best Option Implementation")
-      
-      # Add buffers if they exist
-      if(!is.null(buffers()) && nrow(buffers()) > 0) {
-        p <- p + geom_sf(data = buffers(), fill = NA, color = "red", 
-                        linetype = "dashed", size = 0.5)
-      }
-      
-      return(p)
-    } else {
-      return(NULL)
-    }
-  }
-  
-  # Static version of play_freq for frequency maps
-  play_freq_static = function(){ 
-    req(cmf(), prio(), dat_matched(), hru_matcher(), fit())
-    
-    dat = dat_matched()
-    
-    if (nrow(dat) == 0 || ncol(dat) == 0) { return(NULL) }
-    
-    optima <- unique(match(do.call(paste, dat), do.call(paste, fit())))
-    hru_subset_freq = hru_matcher()[, c("id", as.character(optima))]
-    
-    hru_freq = hru_subset_freq
-    hru_freq$freq = rowSums(!is.na(hru_freq[, -which(names(hru_freq) == "id")])) / (ncol(hru_freq) - 1)
-    opt_cols <- setdiff(names(hru_freq), c("id", "freq"))
-    
-    hru_share = hru_freq
-    hru_share$measure = apply(hru_share[opt_cols], 1, color_meas_most) 
-    hru_share = hru_share %>% select(id, measure, freq)
-    
-    # Join with spatial data
-    hru_spatial = left_join(cmf(), hru_share, by = c("id")) %>%
-      select(id, geometry, measure, freq) %>%
-      st_make_valid() %>%
-      filter(!st_is_empty(geometry))
-    
-    # Prepare color palette for measures
-    mes = unique(hru_ever()$measure)
-    man_col = c("#66C2A5", "#4db818", "#663e13", "#F7A600", "#03597F", 
-                "#83D0F5", "#FFEF2C", "#a84632", "#b82aa5", "#246643")
-    man_col = man_col[1:length(unique(mes))]
-    names(man_col) = unique(mes)
-    
-    # Create the plot
-    p <- ggplot(hru_spatial) +
-      geom_sf(aes(fill = measure, alpha = freq), color = "white", size = 0.1) +
-      scale_fill_manual(values = man_col, na.value = "lightgrey", 
-                       name = "Measure Type") +
-      scale_alpha_continuous(name = "Frequency", range = c(0.3, 1.0)) +
-      theme_void() +
-      theme(
-        legend.position = "bottom",
-        legend.title = element_text(size = 12, face = "bold"),
-        legend.text = element_text(size = 10),
-        plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
-        panel.background = element_rect(fill = "white", color = NA),
-        plot.background = element_rect(fill = "white", color = NA)
-      ) +
-      labs(title = "Measure Implementation Frequency")
-    
-    # Add buffers if they exist
-    if(!is.null(buffers()) && nrow(buffers()) > 0) {
-      p <- p + geom_sf(data = buffers(), fill = NA, color = "red", 
-                      linetype = "dashed", size = 0.5)
-    }
-    
-    return(p)
-  }
-
   ### Startup ####
   if (file.exists("../input/var_corr_par_bu.csv")) { #if back up exists, the original needs replacing
     file.remove("../input/var_corr_par.csv")
@@ -394,7 +216,7 @@ server <- function(input, output, session) {
       req(par_fiti())
       save_par_fiti <- par_fiti()$name
       save_path_par_fiti <- file.path(save_dir, save_par_fiti)
-      file.coc(par_fiti()$path, save_path_par_fiti, overwrite = TRUE) #copy pareto_fitness.txt
+      file.copy(par_fiti()$path, save_path_par_fiti, overwrite = TRUE) #copy pareto_fitness.txt
       
      
     })
@@ -921,7 +743,7 @@ server <- function(input, output, session) {
     })
  
     observe({
-        if (!file.exists("../data/sq_fitness.txt")) {
+      if (!file.exists("../data/sq_fitness.txt")) {
         req(objectives())
         
         shinyjs::disable("add_sq_f")}
@@ -1239,28 +1061,23 @@ server <- function(input, output, session) {
       play_running(FALSE) #for spinner
     }
 
-    # ==================== MODIFIED DOWNLOAD HANDLERS ====================
-    
     output$download_pm <- downloadHandler(
-      filename = function(){
-        curt = format(Sys.time(), "_%Y%m%d")
-        paste0(input$meas_play_savename, curt, ".png")
-      },
-      
-      content = function(file) {
-        shinyjs::show("spinner_download_play")
-        
-        # Create static plot using ggplot2
-        plot_obj <- single_meas_fun2_static()
-        
-        if (!is.null(plot_obj)) {
-          # Save directly as PNG
-          ggsave(file, plot = plot_obj, width = 10, height = 10, 
-                 dpi = 300, device = "png", bg = "white")
-        }
-        
-        shinyjs::hide("spinner_download_play")
-      }
+
+        filename = function(){
+          curt = format(Sys.time(), "_%Y%m%d")
+          paste0(input$meas_play_savename,curt, ".png")
+        },
+
+        content = function(file) {
+          shinyjs::show("spinner_download_play")
+          measmap <- single_meas_fun2()[[1]]
+          saveWidget(measmap, "temp.html", selfcontained = FALSE)
+          webshot::webshot("temp.html", file = file, cliprect = "viewport",vwidth = 900,
+                           vheight = 900)
+          shinyjs::hide("spinner_download_play")
+          file.remove("temp.html")
+          unlink("temp_files", recursive = TRUE)
+          }
     )
     
     
@@ -1720,25 +1537,25 @@ server <- function(input, output, session) {
   output$freq_map_play = renderUI({ play_freq()  })
   
   output$download_freq <- downloadHandler(
+    
     filename = function(){
       curt = format(Sys.time(), "_%Y%m%d")
-      paste0(input$freq_plot_savename, curt, ".png")
+      paste0(input$freq_plot_savename,curt, ".png")
     },
+    
     
     content = function(file) {
       shinyjs::show("spinner_download_play2")
       
-      # Create static plot using ggplot2
-      plot_obj <- play_freq_static()
+      freqmap <- play_freq(leg=FALSE)#exports global pal and mes
       
-      if (!is.null(plot_obj)) {
-        # Save directly as PNG
-        ggsave(file, plot = plot_obj, width = 10, height = 10, 
-               dpi = 300, device = "png", bg = "white")
-      }
-      
+      saveWidget(freqmap, "temp.html", selfcontained = FALSE)
+      webshot::webshot("temp.html", file = file, cliprect = "viewport",vwidth = 900,
+                       vheight = 900)
       shinyjs::hide("spinner_download_play2")
-    }
+      file.remove("temp.html")
+      unlink("temp_files", recursive = TRUE)
+      }
   )
   
  freq_shaper = function(){ 
@@ -1944,7 +1761,7 @@ server <- function(input, output, session) {
         dev.off()
     }
   )
-   
+ 
   ### Configure ####
   
       output$next_step <- renderUI({
@@ -3621,7 +3438,6 @@ server <- function(input, output, session) {
   output$spinner_meas <- renderUI({if(isTRUE(meas_running())){return(NULL)}else{return("")}})
   
 
-  # ==================== MODIFIED DOWNLOAD HANDLER FOR AHP ====================
   output$download_am = downloadHandler(
     filename = function() {
       curt = format(Sys.time(), "_%Y%m%d")
@@ -3630,18 +3446,14 @@ server <- function(input, output, session) {
     },
     content = function(file) {
       shinyjs::show("spinner_download_ahp")  
-      
-      # Create static plot using ggplot2
-      plot_obj <- single_meas_fun_static()
-      
-      if (!is.null(plot_obj)) {
-        # Save directly as PNG
-        ggsave(file, plot = plot_obj, width = 10, height = 10, 
-               dpi = 300, device = "png", bg = "white")
-      }
-      
+      mp =single_meas_fun()[[1]]
+      saveWidget(mp, "temp.html", selfcontained = FALSE)
+      webshot::webshot("temp.html", file = file, cliprect = "viewport",vwidth = 900,
+                       vheight = 900)
       shinyjs::hide("spinner_download_ahp")  
-    }
+      file.remove("temp.html")
+      unlink("temp_files", recursive = TRUE)
+      }
   )
   
   shp_ahp = function(shp=T){
@@ -3682,6 +3494,37 @@ server <- function(input, output, session) {
     }
   )
  
+  
+  ## AHP sliders
+  # output$sliders_ui <- renderUI({
+  #   req(objectives())
+  #   sliders <- list()
+  #   num_criteria <- length(objectives())
+  #   
+  #   for (i in 1:(num_criteria - 1)) {
+  #     for (j in (i + 1):num_criteria) {
+  #       slider_id <- paste0("c", i, "_c", j)
+  #       sliders[[slider_id]] <- sliderTextInput(
+  #         inputId = slider_id,
+  #         label =paste0(objectives()[j]," vs. ",objectives()[i]), 
+  #         choices = c(paste0(objectives()[j]," - ",9:2),"Equal",paste0(2:9," - ",objectives()[i])),
+  #         
+  #         selected = "Equal",
+  #         grid = TRUE,
+  #         hide_min_max = FALSE,
+  #         animate = FALSE,
+  #         width = "100%", 
+  #         force_edges = T
+  #         
+  #       )
+  #     }
+  #   }
+  #   
+  #   do.call(tagList, sliders)
+  # })
+
+  
+  
   # scatter function
   create_plot <- function(cn) { #cn - card number
     req(fit(),ahp_combo())
@@ -3835,6 +3678,8 @@ server <- function(input, output, session) {
     })
 
   })
+  
+
   
 
 }
