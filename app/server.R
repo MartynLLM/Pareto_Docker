@@ -2709,8 +2709,7 @@ server <- function(input, output, session) {
           
         }else{selected_data <- NULL}
         
-      #likely a typo here - had pcs_vs_var, pcs_vs_vars declared   
-      return(pcs_vs_vars(dat = sols3(),x_var = input$x_var_pcs_vs, y_var =input$y_var_pcs_vs, 
+      return(pcs_vs_var(dat = sols3(),x_var = input$x_var_pcs_vs, y_var =input$y_var_pcs_vs, 
                         col_var=input$col_var_pcs_vs, size_var=input$size_var_pcs_vs, 
                         flip =input$flip,
                         sel_tab = selected_data
