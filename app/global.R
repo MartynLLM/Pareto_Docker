@@ -23,9 +23,9 @@ foo1(c("configr", "corrplot", "DT", "fs", "fst",
        "shinyFiles", "shinyjs","shinythemes",  "shinyWidgets",  "sp",
        "spdep",    "tidyverse",  "tmap",  "viridis", "webshot"))
 
-if (!webshot::is_phantomjs_installed()) {
-  webshot::install_phantomjs()
-}
+#if (!webshot::is_phantomjs_installed()) {
+#  webshot::install_phantomjs()
+#}
 
 
 options(shiny.maxRequestSize = 1000*1024^2)
