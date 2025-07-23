@@ -21,7 +21,9 @@ foo1(c("configr", "corrplot", "DT", "fs", "fst",
        "quanteda",   "RColorBrewer",   "reticulate",
        "scales", "sf", "shiny", "shinycssloaders", "shinydashboard",
        "shinyFiles", "shinyjs","shinythemes",  "shinyWidgets",  "sp",
-       "spdep",    "tidyverse",  "tmap",  "viridis", "webshot"))
+       "spdep",    "tidyverse",  "tmap",  "viridis"
+       #, "webshot"
+       ))
 
 #if (!webshot::is_phantomjs_installed()) {
 #  webshot::install_phantomjs()
