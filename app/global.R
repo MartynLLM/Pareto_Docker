@@ -19,7 +19,9 @@ foo1(c( "config", #added for correlation_matrix code
         "geosphere","geohashTools", "ggplot2","ggtext", "gridExtra",
         "ini", "leaflet", "leafsync",
         "mapview",  "plotly",  "processx", 
-       "quanteda",   "RColorBrewer",   "reticulate",
+       "quanteda",   "RColorBrewer",
+       "reshape2", #added for kmeans.r
+       "reticulate",
        "scales", "sf", "shiny", "shinycssloaders", "shinydashboard",
        "shinyFiles", "shinyjs","shinythemes",  "shinyWidgets",  "sp",
        "spdep",    "tidyverse",  "tmap",  "viridis"

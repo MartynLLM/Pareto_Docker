@@ -2024,9 +2024,17 @@ server <- function(input, output, session) {
         write_outl(handle_outliers_boolean = "false")
         write_cluster(fixed_cluster_boolean="true",fixed_clusters=15)
         ##run clustering
-         cmd = paste("../python_files/kmeans.exe")
-         result = system(cmd,intern=TRUE)
-         default_running(FALSE) 
+        # cmd = paste("../python_files/kmeans.exe")
+        # result = system(cmd,intern=TRUE)
+        # default_running(FALSE) 
+        ##run clustering
+        tryCatch({
+          source("support/kmeans.R")
+          cat("K-means clustering completed successfully\n")
+        }, error = function(e) {
+        cat("Error running k-means clustering:", e$message, "\n")
+        })
+        default_running(FALSE)
         }else{
           
           output$corr_notthere_config <- renderText({corr_file_check()}) #default not run when there are files missing
