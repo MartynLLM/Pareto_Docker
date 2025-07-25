@@ -24,11 +24,11 @@ foo1(c( "cluster", #added for kmeans.r
         "mapview",  "plotly",  "processx", 
        "quanteda",   "RColorBrewer",
        "reshape2", #added for kmeans.r
-       "reticulate",
+       #"reticulate", likely safe to remove
        "scales", "sf", "shiny", "shinycssloaders", "shinydashboard",
        "shinyFiles", "shinyjs","shinythemes",  "shinyWidgets",  "sp",
        "spdep",    "tidyverse",  "tmap",  "viridis"
-       #, "webshot" removed ro performance testing
+       #, "webshot" removed for performance testing
        ))
 
   # from Claude
