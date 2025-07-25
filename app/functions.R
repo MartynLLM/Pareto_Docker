@@ -478,6 +478,30 @@ run_python_script <- function(path_script="",pca_status) {
   }
 }
 
+#Claude's replacement for Python caller
+# Option 1: Using source() with output capture (RECOMMENDED)
+run_r_script <- function(path_script = "", pca_status) {
+  pca_status("")
+  
+  tryCatch({
+    # Capture all output from the sourced script
+    output <- capture.output({
+      source(path_script, echo = TRUE, print.eval = TRUE)
+    }, type = "output")
+    
+    # Update status with captured output
+    if (length(output) > 0) {
+      pca_status(paste(output, collapse = "\n"))
+    }
+    
+    pca_status(paste(pca_status(), "\nK-means clustering completed successfully!", sep = "\n"))
+    
+  }, error = function(e) {
+    error_msg <- paste("Error running R script:", e$message)
+    pca_status(paste(pca_status(), error_msg, sep = "\n"))
+  })
+}
+
 #### Plotting the optima ####
 ## get linear elements requiring a buffer
 pull_buffer = function(){

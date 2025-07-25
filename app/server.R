@@ -394,7 +394,7 @@ server <- function(input, output, session) {
       req(par_fiti())
       save_par_fiti <- par_fiti()$name
       save_path_par_fiti <- file.path(save_dir, save_par_fiti)
-      file.coc(par_fiti()$path, save_path_par_fiti, overwrite = TRUE) #copy pareto_fitness.txt
+      file.copy(par_fiti()$path, save_path_par_fiti, overwrite = TRUE) #copy pareto_fitness.txt
       
      
     })
@@ -2406,9 +2406,12 @@ server <- function(input, output, session) {
     
     # command to run the Python script
     # if(input$pcamethod=="k-means"){pca_script <- "../python_files/kmeans.py"}else{pca_script <- "../python_files/kmedoid.py"}
-    if(input$pcamethod=="k-means"){pca_script <- "../python_files/kmeans.exe"}else{pca_script <- "../python_files/kmedoid.exe"}
-    
-    run_python_script(path_script=pca_script,pca_status)
+    #if(input$pcamethod=="k-means"){pca_script <- "../python_files/kmeans.exe"}else{pca_script <- "../python_files/kmedoid.exe"}
+    #run_python_script(path_script=pca_script,pca_status)
+
+    # R replacement
+    if(input$pcamethod=="k-means"){pca_script <- "support/kmeans.r"}else{pca_script <- "support/kmedoid.r"}
+    run_r_script(path_script=pca_script,pca_status)
     pca_spin(FALSE) #spinner
     })
   

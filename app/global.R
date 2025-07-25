@@ -14,8 +14,11 @@ foo1 <- function(x) {
 }
 
 ## check if any packages are missing (not only here but also for external convert_optain)
-foo1(c( "config", #added for correlation_matrix code
-        "configr", "corrplot", "DT", "fs", "fst", 
+foo1(c( "cluster", #added for kmeans.r
+        "config", #added for correlation_matrix code
+        "configr", "corrplot", 
+        "dplyr",  #added for kmeans.r
+        "DT", "fs", "fst", 
         "geosphere","geohashTools", "ggplot2","ggtext", "gridExtra",
         "ini", "leaflet", "leafsync",
         "mapview",  "plotly",  "processx", 
@@ -25,13 +28,11 @@ foo1(c( "config", #added for correlation_matrix code
        "scales", "sf", "shiny", "shinycssloaders", "shinydashboard",
        "shinyFiles", "shinyjs","shinythemes",  "shinyWidgets",  "sp",
        "spdep",    "tidyverse",  "tmap",  "viridis"
-       #, "webshot"
+       #, "webshot" removed ro performance testing
        ))
 
-#if (!webshot::is_phantomjs_installed()) {
-#  webshot::install_phantomjs()
-#}
-
+  # from Claude
+  #install.packages(c("cluster", "ggplot2", "gridExtra", "reshape2", "dplyr", "RColorBrewer", "viridis"))
 
 options(shiny.maxRequestSize = 1000*1024^2)
 
