@@ -1994,8 +1994,17 @@ server <- function(input, output, session) {
                       default_vals= default_vals(),ranger = range_controlled())
         
         ## run correlation
-          cmd <- paste("../python_files/correlation_matrix.exe")
-          result <- system(cmd, intern = TRUE)
+        #  cmd <- paste("../python_files/correlation_matrix.exe")
+        #  result <- system(cmd, intern = TRUE)
+        
+        # Option 1: Run the R script directly within the current R session (RECOMMENDED)
+        ## run correlation
+        tryCatch({
+          source("support/correlation_matrix.R")
+            cat("Correlation matrix calculation completed successfully\n")
+        }, error = function(e) {
+        cat("Error running correlation matrix:", e$message, "\n")
+        })
         
         corr <<- read.csv("../output/correlation_matrix.csv", row.names = 1) #global because of re-rendering of plot
         high_corr = find_high_corr(corr,threshold=0.7, tab=T, strike=NULL) 
