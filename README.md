@@ -1,10 +1,21 @@
 # ParetoPick-R: Multi-Objective Optimization Analysis Tool
+## 🐳 **Prototype Docker Application**
+
+> **⚠️ PROTOTYPE STATUS**: This is a prototype Docker application currently under development. Features and functionality may change as development progresses. Use in production environments is not recommended at this time.
 
 ## Overview
 
-ParetoPick-R is a based on code developed by Dr. Cordula Wittekind as part of the Horizon Europe funded [OPTAIN project](https://www.optain.eu/). The code presented here is a comprehensive Shiny web application designed for analyzing Pareto optimization results through advanced clustering and visualization techniques. The application provides tools for exploring multi-objective optimization solutions, performing correlation analysis, applying Principal Component Analysis (PCA), and implementing clustering algorithms to identify representative solutions from Pareto fronts.
+ParetoPick-R is a **containerized prototype** Shiny web application designed for analyzing Pareto optimization results through advanced clustering and visualization techniques. Based on code developed by Dr. Cordula Wittekind as part of the Horizon Europe funded [OPTAIN project](https://www.optain.eu/), this Docker prototype provides tools for exploring multi-objective optimization solutions, performing correlation analysis, applying Principal Component Analysis (PCA), and implementing clustering algorithms to identify representative solutions from Pareto fronts.
 
-## Features
+## 🚀 Docker Deployment Features
+
+- **Containerized Environment**: Self-contained R/Shiny application with all dependencies
+- **Isolated Processing**: Runs in Docker container for consistent behavior across environments
+- **Scalable Architecture**: Designed for potential cloud deployment and scaling
+- **Data Persistence**: Configured with volume mounts for data input/output
+- **Development Ready**: Prototype setup for testing and iterative development
+
+## Application Features
 
 - **Pareto Front Visualization**: Interactive exploration of multi-objective optimization results
 - **Correlation Analysis**: Identification and management of highly correlated variables
@@ -14,9 +25,25 @@ ParetoPick-R is a based on code developed by Dr. Cordula Wittekind as part of th
 - **Spatial Analysis**: Geographic visualization of measure implementations
 - **Data Export**: Multiple export formats for results and visualizations
 
-## Application Structure
+## 🏗️ Container Architecture
 
-### Main Tabs
+### Directory Structure
+```
+/
+├── app/                    # Main Shiny application
+│   ├── ui.R               # User interface
+│   ├── server.R           # Server logic
+│   ├── global.R           # Global variables and packages
+│   ├── functions.R        # Custom helper functions
+│   └── www/               # Web assets
+├── data/                  # Container input data mount
+├── input/                 # Processed input files (container volume)
+├── output/                # Generated output files (container volume)
+├── support/               # R script alternatives to Python
+└── python_files/          # Python executables (optional)
+```
+
+### Main Application Tabs
 
 1. **Introduction**: Overview of the application and methodology
 2. **Data Preparation**: File upload and data preprocessing
@@ -27,65 +54,69 @@ ParetoPick-R is a based on code developed by Dr. Cordula Wittekind as part of th
 7. **Cluster Analysis**: Analysis and visualization of clustering results
 8. **AHP (Analytical Hierarchy Process)**: Alternative prioritization methodology
 
-## File Structure
+## 🐳 Docker Setup and Deployment
 
+### Prerequisites
+- Docker Engine 20.10+
+- Docker Compose (optional, for orchestrated deployment)
+- Minimum 4GB RAM for container
+- 2GB available disk space
+
+### Quick Start (Prototype)
+```bash
+# Clone the repository
+git clone [repository-url]
+cd ParetoPick-R
+
+# Build the Docker image (when Dockerfile is available)
+docker build -t paretopick-r:prototype .
+
+# Run the container with volume mounts
+docker run -p 3838:3838 \
+  -v $(pwd)/data:/app/data \
+  -v $(pwd)/input:/app/input \
+  -v $(pwd)/output:/app/output \
+  paretopick-r:prototype
 ```
-/
-├── app/
-│   ├── ui.R              # Shiny user interface
-│   ├── server.R          # Shiny server logic
-│   ├── global.R          # Global variables and package loading
-│   └── functions.R       # Custom helper functions
-├── data/                 # Input data directory
-├── input/               # Processed input files
-├── output/              # Generated output files
-├── support/             # R script alternatives to Python
-└── python_files/        # Python executables (optional)
+
+### Development Setup
+```bash
+# For development with live code changes
+docker run -p 3838:3838 \
+  -v $(pwd)/app:/app/app \
+  -v $(pwd)/data:/app/data \
+  -v $(pwd)/input:/app/input \
+  -v $(pwd)/output:/app/output \
+  paretopick-r:prototype
 ```
 
-## Dependencies
+### Container Configuration
 
-### R Packages
+**Port Mapping**: 
+- Container Port: 3838 (Shiny default)
+- Host Port: 3838 (configurable)
 
-The application automatically installs required packages through `global.R`:
+**Volume Mounts**:
+- `/app/data`: Input data files
+- `/app/input`: Processed intermediate files  
+- `/app/output`: Generated results and exports
 
-**Core Packages:**
-- `shiny`, `shinydashboard`, `shinyjs`, `shinyWidgets`
-- `DT`, `plotly`, `ggplot2`, `corrplot`
+**Environment Variables** (Future):
+- `SHINY_PORT`: Application port (default: 3838)
+- `SHINY_HOST`: Host binding (default: 0.0.0.0)
+- `R_MEMORY_LIMIT`: Memory allocation for R processes
 
-**Data Processing:**
-- `dplyr`, `tidyverse`, `reshape2`
-- `cluster`, `config`, `configr`
-
-**Spatial Analysis:**
-- `sf`, `sp`, `spdep`, `geosphere`
-- `leaflet`, `mapview`, `tmap`
-
-**Visualization:**
-- `RColorBrewer`, `viridis`, `gridExtra`
-- `ggtext`, `scales`
-
-### System Requirements
-
-- R (version 4.0 or higher recommended)
-- Python (optional, R alternatives available)
-- Sufficient memory for large datasets
-- Web browser for Shiny interface
-
-## Required Input Files
+## 📋 Required Input Files
 
 ### Essential Files (Minimum for Pareto Front Analysis)
-
 1. **`pareto_fitness.txt`**: Pareto optimization results
 2. **Objective names**: Defined through the Data Preparation interface
 
 ### Additional Files (For Full Clustering Analysis)
-
 1. **`pareto_genomes.txt`**: Genome/solution representations
 2. **`hru.con`**: Hydrological Response Unit connections
 3. **`measure_location.csv`**: Spatial measure implementation data
-4. **Shapefile components**:
-   - `hru.shp`, `hru.shx`, `hru.dbf`, `hru.prj`
+4. **Shapefile components**: `hru.shp`, `hru.shx`, `hru.dbf`, `hru.prj`
 5. **`rout_unit.con`**: Routing unit connections
 6. **`sq_fitness.txt`**: Status quo fitness values (optional)
 
@@ -99,8 +130,6 @@ obj1    obj2    obj3    obj4
 ...
 ```
 
-**pareto_genomes.txt**: Solution encoding (implementation-specific format)
-
 **measure_location.csv**: Measure-HRU mapping
 ```
 name,nswrm,obj_id
@@ -109,196 +138,129 @@ measure2,type2,"hru4,hru5"
 ...
 ```
 
-## Installation and Setup
+## 🔧 Dependencies (Container-Managed)
 
-### 1. Clone Repository
+### R Packages
+The Docker container automatically installs and manages all required R packages:
+
+**Core Shiny Packages:**
+- `shiny`, `shinydashboard`, `shinyjs`, `shinyWidgets`
+- `DT`, `plotly`, `ggplot2`, `corrplot`
+
+**Data Processing:**
+- `dplyr`, `tidyverse`, `reshape2`, `cluster`
+- `config`, `configr`
+
+**Spatial Analysis:**
+- `sf`, `sp`, `spdep`, `geosphere`
+- `leaflet`, `mapview`, `tmap`
+
+**Visualization:**
+- `RColorBrewer`, `viridis`, `gridExtra`
+- `ggtext`, `scales`
+
+### System Requirements (Host)
+- Docker Engine with sufficient resources
+- Web browser for accessing application interface
+- Network access for package installation during build
+
+## 🚦 Usage Workflow
+
+### 1. Container Startup
 ```bash
-git clone [repository-url]
-cd ParetoPick-R
+# Access the application at http://localhost:3838
+# Upload data files through the web interface
 ```
 
-### 2. Install Dependencies
-Dependencies are automatically installed when running the application. Alternatively, install manually:
-
-```r
-install.packages(c(
-  "cluster", "config", "configr", "corrplot", "dplyr", "DT", 
-  "fs", "fst", "geosphere", "geohashTools", "ggplot2", "ggtext", 
-  "gridExtra", "ini", "leaflet", "leafsync", "mapview", "plotly", 
-  "processx", "quanteda", "RColorBrewer", "reshape2", "reticulate", 
-  "scales", "sf", "shiny", "shinycssloaders", "shinydashboard", 
-  "shinyFiles", "shinyjs", "shinythemes", "shinyWidgets", "sp", 
-  "spdep", "tidyverse", "tmap", "viridis"
-))
-```
-
-### 3. Launch Application
-```r
-shiny::runApp("app/")
-```
-
-## Usage Workflow
-
-### 1. Data Preparation
+### 2. Data Preparation
 - Upload required input files through the Data Preparation tab
 - Define objective names and units
 - Run data preprocessing to generate analysis variables
 
-### 2. Pareto Front Exploration
+### 3. Pareto Front Exploration
 - Visualize optimization results across different objectives
 - Set axis ranges and explore solution relationships
 - Identify regions of interest for clustering
 
-### 3. Clustering Analysis (Optional)
+### 4. Clustering Analysis
+- **Quick Start**: Use default clustering parameters
+- **Manual Configuration**: Custom correlation thresholds, PCA components, cluster numbers
+- **Results Analysis**: Examine representative solutions and export results
 
-#### Quick Start with Defaults
-1. Navigate to "Configure Clustering"
-2. Select default settings
-3. Run automatic clustering with predefined parameters
+## 🛠️ Development and Testing
 
-#### Manual Clustering
-1. **Correlation Analysis**:
-   - Select variables for clustering
-   - Set correlation threshold (default: 0.7)
-   - Remove highly correlated variables
+### Prototype Development Status
+- ✅ Core Shiny application functional
+- ✅ R package dependencies managed
+- ⚠️ Docker configuration in development
+- ⚠️ Container optimization ongoing
+- ⚠️ Production deployment not ready
 
-2. **PCA & Clustering**:
-   - Configure PCA components
-   - Choose clustering method (K-means or K-medoids)
-   - Set number of clusters
-   - Execute clustering algorithm
-
-### 4. Results Analysis
-- Examine representative solutions from each cluster
-- Compare measure implementations across clusters
-- Export results and visualizations
-
-### 5. AHP Analysis (Alternative Method)
-- Define pairwise comparisons between objectives
-- Calculate priority weights
-- Combine with clustering results if desired
-
-## Configuration
-
-### Clustering Parameters
-
-The application uses `input/config.ini` for clustering configuration:
-
-```ini
-[Clustering]
-min_clusters=3
-max_clusters=20
-fixed_clusters_boolean=true
-fixed_clusters=15
-
-[PCA]
-min_components=2
-max_components=8
-
-[Extreme_solutions]
-handle_outliers_boolean=false
-deviations_min=3
-deviations_max=3
+### Local Development
+```bash
+# For local R development without Docker
+cd app/
+R -e "shiny::runApp()"
 ```
 
-### Customization Options
+### Container Testing
+```bash
+# Test container build
+docker build -t paretopick-r:test .
 
-- **Correlation threshold**: Adjustable from 0.0 to 1.0
-- **Cluster numbers**: Fixed or range-based testing
-- **Outlier handling**: Enable/disable with custom parameters
-- **PCA components**: Specify number of principal components
-- **Visualization**: Customizable axis labels and ranges
+# Test with sample data
+docker run --rm -p 3838:3838 \
+  -v $(pwd)/test-data:/app/data \
+  paretopick-r:test
+```
 
-## Output Files
+## ⚠️ Prototype Limitations
 
-### Generated During Analysis
+- **Experimental Features**: Some functionality may be unstable
+- **Performance**: Not optimized for large-scale production use
+- **Data Persistence**: Container restarts may clear temporary data
+- **Error Handling**: Limited error recovery in prototype stage
+- **Documentation**: Some features may be undocumented
 
-- `correlation_matrix.csv`: Variable correlation results
-- `pca_content.RDS`: Variables included in PCA
-- `hru_in_optima.RDS`: HRU-optimum relationships
-- Various clustering output files and plots
+## 🐛 Troubleshooting
 
-### Export Options
+### Container Issues
+- **Build Failures**: Check Docker version and available disk space
+- **Memory Errors**: Increase Docker memory allocation (minimum 4GB)
+- **Port Conflicts**: Use different host port mapping (-p 8080:3838)
 
-- **Plots**: PNG format with customizable resolution
-- **Data tables**: CSV format
-- **Shapefiles**: Zipped spatial data
-- **Clustering results**: Multiple formats available
+### Application Issues
+- **File Upload Errors**: Verify volume mounts and file permissions
+- **Clustering Failures**: Ensure all required input files are present
+- **Performance**: Consider reducing dataset size for testing
 
-## Troubleshooting
-
-### Common Issues
-
-1. **File Upload Errors**
-   - Ensure files match expected formats
-   - Check file permissions and size limits
-   - Verify shapefile completeness (all components required)
-
-2. **Clustering Failures**
-   - Verify all required files are present
-   - Check for sufficient data variability
-   - Ensure reasonable parameter settings
-
-3. **Memory Issues**
-   - Reduce dataset size for testing
-   - Increase R memory allocation
-   - Consider server deployment for large datasets
-
-### Error Messages
-
-- **"Please provide pareto_fitness.txt"**: Upload fitness file in Data Preparation
-- **"All files have been provided, please specify objective names"**: Define objectives before proceeding
-- **"Please run the correlation analysis first"**: Complete correlation step before clustering
-
-## Performance Considerations
-
-- **Data Size**: Application tested with datasets up to several thousand solutions
-- **Processing Time**: Clustering may take 5-15 minutes depending on dataset size
-- **Memory Usage**: Ensure sufficient RAM for large spatial datasets
-- **Browser Compatibility**: Tested with modern browsers (Chrome, Firefox, Safari)
-
-## Technical Architecture
-
-### Frontend (Shiny UI)
-- **Framework**: Shiny Dashboard
-- **Styling**: Custom CSS with responsive design
-- **Interactivity**: Real-time updates and conditional panels
-
-### Backend (Server Logic)
-- **Processing**: R-based algorithms with optional Python integration
-- **Data Handling**: Efficient file I/O and memory management
-- **Validation**: Comprehensive input checking and error handling
-
-### Integration Points
-- **R-Python Interface**: Fallback R implementations available
-- **File System**: Structured directory organization
-- **Configuration**: INI-based parameter management
-
-## Contributing
+## 🤝 Contributing to the Prototype
 
 ### Development Guidelines
-1. Follow existing code structure and naming conventions
-2. Test with sample datasets before committing
-3. Update documentation for new features
-4. Maintain backward compatibility where possible
+1. Test changes in containerized environment
+2. Update documentation for new features
+3. Follow existing code structure and naming conventions
+4. Validate with sample datasets before committing
 
-### Adding New Features
-1. Implement in appropriate module (UI/Server/Functions)
-2. Add necessary package dependencies to `global.R`
-3. Update user interface elements
-4. Test integration with existing workflow
+### Docker Development
+1. Test container builds locally before pushing
+2. Optimize image size where possible
+3. Document any new environment variables or configurations
+4. Ensure cross-platform compatibility
 
-## License and Citation
+## 📄 License and Citation
 
-The development of this code has received funding as part of the OPTAIN (OPtimal strategies to retAIN and re-use water and nutrients in small agricultural catchments across different soil-climatic regions in Europe, cordis.europa.eu) project under the European Union’s Horizon 2020 research and innovation programme under grant agreement No. 862756. 
+**Project Funding**: The development of this code received funding as part of the OPTAIN project under the European Union's Horizon 2020 research and innovation programme (grant agreement No. 862756).
 
-Licensing shall follow the license for the parent repositorry
+**Original Code**: Dr. Cordula Wittekind (OPTAIN project)  https://github.com/cowitt/ParetoPick-R
+**Container Prototype**: Maintained by Martyn Futter (martyn.futter@slu.se)
 
-## Support and Contact
+## 📞 Support and Contact
 
-This code was developed by Cordula Wittekind as part of the OPTAIN project
-This version is maintained by Martyn Futter martyn.futter@slu.se
+**Prototype Support**: For Docker-related issues and prototype feedback  
+**Technical Contact**: martyn.futter@slu.se  
+**Project Information**: [OPTAIN Project Website](https://www.optain.eu/)
 
 ---
 
-*This documentation covers the core functionality of ParetoPick-R. For specific implementation details or advanced configuration options, refer to the source code comments and inline documentation.*
+**⚠️ Prototype Disclaimer**: This Docker application is in active development. Features, performance, and stability are subject to change. Please report issues and provide feedback to help improve the containerized deployment.
