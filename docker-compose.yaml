@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "3838:3838"
+    volumes:
+      - ./data:/srv/shiny-server/data
+      - ./input:/srv/shiny-server/input
+      - ./output:/srv/shiny-server/output
+    environment:
+      - SHINY_LOG_STDERR=1
+    restart: unless-stopped
