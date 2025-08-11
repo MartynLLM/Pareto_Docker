@@ -2173,10 +2173,16 @@ server <- function(input, output, session) {
                         default_vals= default_vals(),ranger = range_controlled())   
           
           ## run the Python script
-          cmd <- paste("../python_files/correlation_matrix.exe")
-          
+          #cmd <- paste("../python_files/correlation_matrix.exe")
           ## capture python output
-          result <- system(cmd, intern = TRUE)
+          #result <- system(cmd, intern = TRUE)
+
+          tryCatch({
+          source("support/correlation_matrix.R")
+            cat("Correlation matrix calculation completed successfully\n")
+          }, error = function(e) {
+          cat("Error running correlation matrix:", e$message, "\n")
+          })
     
           corr <<- read.csv("../output/correlation_matrix.csv", row.names = 1) #global because of re-rendering of plot
           output$corrplot <- renderPlot({plt_corr(corr)})

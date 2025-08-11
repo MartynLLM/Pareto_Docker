@@ -1,5 +1,7 @@
 PAT
 .Rproj.user
+.Rhistory
+.RData
 python_files
 www
 archive
